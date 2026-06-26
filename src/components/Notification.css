@@ -1,0 +1,34 @@
+.notification {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-lg);
+  animation: slideIn 0.3s ease;
+  max-width: 340px;
+}
+
+.notification-success {
+  background: var(--bg-card);
+  border: 1.5px solid var(--success);
+  color: var(--text-primary);
+}
+
+.notification-error {
+  background: var(--bg-card);
+  border: 1.5px solid var(--danger);
+  color: var(--text-primary);
+}
+
+.notif-icon { font-size: 1rem; flex-shrink: 0; }
+
+@media (max-width: 600px) {
+  .notification { bottom: 16px; right: 16px; left: 16px; max-width: none; }
+}
