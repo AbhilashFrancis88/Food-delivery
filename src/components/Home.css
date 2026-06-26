@@ -249,8 +249,26 @@
 }
 
 .stars { color: var(--star); font-size: 0.82rem; }
+.stars strong { color: var(--text-primary); }
 .rating-num { color: var(--text-secondary); font-weight: 600; }
 .prep-time { font-size: 0.82rem; color: var(--text-muted); }
+
+.card-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+}
+
+.review-count {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.delivery-badge-inline {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
 
 .popular-footer {
   display: flex;
@@ -293,4 +311,127 @@
 
 @media (max-width: 480px) {
   .categories-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Hero Search */
+.hero-search {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  max-width: 440px;
+}
+
+.hero-search-input {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.hero-search-input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-light);
+  outline: none;
+}
+
+.hero-search-input::placeholder { color: var(--text-muted); }
+
+/* Promo Strip */
+.promo-strip-section {
+  padding: 24px 0;
+}
+
+.promo-strip {
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.promo-track {
+  display: flex;
+  gap: 16px;
+  animation: promoScroll 24s linear infinite;
+  width: max-content;
+}
+
+.promo-strip:hover .promo-track {
+  animation-play-state: paused;
+}
+
+.promo-offer-card {
+  flex-shrink: 0;
+  width: 280px;
+  padding: 24px;
+  border-radius: 16px;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: default;
+}
+
+.promo-offer-emoji {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.promo-offer-text h4 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  font-family: 'Syne', sans-serif;
+}
+
+.promo-offer-text p {
+  font-size: 0.8rem;
+  opacity: 0.85;
+}
+
+/* Favourite button on popular cards */
+.popular-emoji {
+  position: relative;
+}
+
+.fav-btn {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: transform 0.2s ease;
+  padding: 0;
+}
+
+.fav-btn:hover { transform: scale(1.1); }
+.fav-btn.fav-active { animation: heartPop 0.3s ease; }
+
+/* Added button animation */
+.added-btn {
+  background: var(--success) !important;
+  color: #fff !important;
+  animation: addPulse 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .promo-strip {
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .promo-strip::-webkit-scrollbar { display: none; }
+  .promo-track {
+    animation: none;
+  }
+  .hero-search { max-width: 100%; }
 }

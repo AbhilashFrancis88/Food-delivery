@@ -133,6 +133,115 @@
   color: var(--success);
 }
 
+.add-btn.added-btn {
+  background: var(--success) !important;
+  color: #fff !important;
+  animation: addPulse 0.3s ease;
+}
+
+/* Rating row */
+.card-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+}
+
+.card-rating-row .stars strong {
+  color: var(--text-primary);
+}
+
+.review-count {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+/* Delivery badge on card */
+.delivery-badge-card {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+/* Favourite button on menu card */
+.fav-btn-card {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: transform 0.2s ease;
+  padding: 0;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.fav-btn-card:hover { transform: scale(1.1); }
+.fav-btn-card.fav-active { animation: heartPop 0.3s ease; }
+
+/* Skeleton Loader */
+.skeleton-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.skeleton-image {
+  height: 120px;
+}
+
+.skeleton-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 7px;
+}
+
+.skeleton-line-short {
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-btn {
+  height: 34px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.skeleton-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.skeleton-tab {
+  width: 72px;
+  height: 34px;
+  border-radius: 20px;
+}
+
 @media (max-width: 600px) {
   .sort-select { width: 100%; }
 }

@@ -6,8 +6,10 @@ import Notification from './components/Notification';
 import Home from './components/Home';
 import Menu from './components/Menu';
 import Cart from './components/Cart';
+import Checkout from './components/Checkout';
 import Orders from './components/Orders';
 import Admin from './components/Admin';
+import Favourites from './components/Favourites';
 import './App.css';
 
 export default function App() {
@@ -22,6 +24,8 @@ export default function App() {
               <Route path="/" element={<Home />} />
               <Route path="/menu" element={<Menu />} />
               <Route path="/cart" element={<Cart />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/favourites" element={<Favourites />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/admin" element={<Admin />} />
             </Routes>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import './Cart.css';
@@ -7,30 +7,22 @@ const DELIVERY_FEE = 49;
 const TAX_RATE = 0.05;
 
 export default function Cart() {
-  const { cart, removeFromCart, updateCartQty, clearCart, cartTotal, placeOrder } = useApp();
-  const [showCheckout, setShowCheckout] = useState(false);
-  const [form, setForm] = useState({ name: '', phone: '', address: '', notes: '' });
-  const [errors, setErrors] = useState({});
+  const { cart, removeFromCart, updateCartQty, clearCart, cartTotal } = useApp();
   const navigate = useNavigate();
 
   const tax = cartTotal * TAX_RATE;
   const total = cartTotal + DELIVERY_FEE + tax;
 
-  const validate = () => {
-    const e = {};
-    if (!form.name.trim()) e.name = 'Name is required';
-    if (!form.phone.trim()) e.phone = 'Phone is required';
-    if (!form.address.trim()) e.address = 'Address is required';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  const handleOrder = () => {
-    if (!validate()) return;
-    placeOrder({ ...form, total, deliveryFee: DELIVERY_FEE, tax });
-    setShowCheckout(false);
-    navigate('/orders');
-  };
+  const estimatedDelivery = (() => {
+    if (cart.length === 0) return '25-35 min';
+    const times = cart.map(item => {
+      const match = (item.deliveryTime || '20-30 min').match(/(\d+)-(\d+)/);
+      return match ? [parseInt(match[1]), parseInt(match[2])] : [20, 30];
+    });
+    const maxLow = Math.max(...times.map(t => t[0]));
+    const maxHigh = Math.max(...times.map(t => t[1]));
+    return `${maxLow}-${maxHigh} min`;
+  })();
 
   if (cart.length === 0) {
     return (
@@ -114,84 +106,20 @@ export default function Cart() {
             <span>Total</span>
             <span className="total-price">₹{total.toFixed(0)}</span>
           </div>
+          <div className="cart-eta-banner">
+            <span>🕐</span>
+            <span>Estimated delivery: <strong>{estimatedDelivery}</strong></span>
+          </div>
           <button
             className="btn btn-primary btn-full btn-lg"
-            style={{ marginTop: '20px' }}
-            onClick={() => setShowCheckout(true)}
+            style={{ marginTop: '16px' }}
+            onClick={() => navigate('/checkout')}
           >
             Proceed to Checkout →
           </button>
           <p className="secure-note">🔒 Secure checkout · Free cancellation</p>
         </div>
       </div>
-
-      {/* Checkout Modal */}
-      {showCheckout && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowCheckout(false)}>
-          <div className="modal">
-            <div className="modal-header">
-              <h2>Delivery Details</h2>
-              <button className="modal-close" onClick={() => setShowCheckout(false)}>✕</button>
-            </div>
-
-            <div className="checkout-form">
-              <div className="form-group">
-                <label className="form-label">Full Name *</label>
-                <input
-                  className={`form-input ${errors.name ? 'input-error' : ''}`}
-                  placeholder="John Doe"
-                  value={form.name}
-                  onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                />
-                {errors.name && <span className="error-msg">{errors.name}</span>}
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Phone *</label>
-                <input
-                  className={`form-input ${errors.phone ? 'input-error' : ''}`}
-                  placeholder="+91 98765 43210"
-                  value={form.phone}
-                  onChange={e => setForm(f => ({ ...f, phone: e.target.value }))}
-                />
-                {errors.phone && <span className="error-msg">{errors.phone}</span>}
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Delivery Address *</label>
-                <textarea
-                  className={`form-input ${errors.address ? 'input-error' : ''}`}
-                  placeholder="123 MG Road, Bengaluru, Karnataka 560001"
-                  rows={3}
-                  value={form.address}
-                  onChange={e => setForm(f => ({ ...f, address: e.target.value }))}
-                />
-                {errors.address && <span className="error-msg">{errors.address}</span>}
-              </div>
-
-              <div className="form-group">
-                <label className="form-label">Special Instructions</label>
-                <textarea
-                  className="form-input"
-                  placeholder="Allergies, gate code, doorbell notes..."
-                  rows={2}
-                  value={form.notes}
-                  onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                />
-              </div>
-
-              <div className="checkout-total-row">
-                <span>Order Total:</span>
-                <span className="total-price">₹{total.toFixed(0)}</span>
-              </div>
-
-              <button className="btn btn-primary btn-full btn-lg" onClick={handleOrder}>
-                Place Order 🎉
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

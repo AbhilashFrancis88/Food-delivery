@@ -111,6 +111,17 @@
   margin-top: 12px;
 }
 
+.cart-eta-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--bg-secondary);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  margin-top: 16px;
+}
+
 /* Checkout form */
 .checkout-form { display: flex; flex-direction: column; gap: 18px; }
 

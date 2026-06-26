@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import './Home.css';
 
@@ -12,9 +12,34 @@ const CATEGORIES = [
   { name: 'Desserts', emoji: '🍫', color: '#6F42C1' },
 ];
 
+const PROMOS = [
+  { headline: '50% OFF up to ₹100', sub: 'Use code RUSH50', emoji: '🎁', color: '#FF6B35' },
+  { headline: 'Free Delivery', sub: 'On orders above ₹299', emoji: '🚚', color: '#28A745' },
+  { headline: 'Buy 1 Get 1 Free', sub: 'Use code BOGO', emoji: '🍕', color: '#6F42C1' },
+  { headline: '₹75 Cashback', sub: 'Pay via UPI', emoji: '💸', color: '#DC3545' },
+];
+
 export default function Home() {
-  const { menuItems, addToCart } = useApp();
+  const { menuItems, addToCart, isFavourite, toggleFavourite } = useApp();
+  const navigate = useNavigate();
   const popular = menuItems.filter(m => m.popular && m.available).slice(0, 4);
+  const [heroSearch, setHeroSearch] = useState('');
+  const [addedItems, setAddedItems] = useState({});
+
+  const handleHeroSearch = (e) => {
+    e.preventDefault();
+    if (heroSearch.trim()) {
+      navigate(`/menu?search=${encodeURIComponent(heroSearch.trim())}`);
+    }
+  };
+
+  const handleAdd = (item) => {
+    addToCart(item);
+    setAddedItems(prev => ({ ...prev, [item.id]: true }));
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [item.id]: false }));
+    }, 1000);
+  };
 
   return (
     <div className="home">
@@ -29,6 +54,15 @@ export default function Home() {
           <p className="hero-subtitle">
             Explore hundreds of dishes from top restaurants. Fresh, hot, and at your door.
           </p>
+          <form className="hero-search" onSubmit={handleHeroSearch}>
+            <input
+              className="hero-search-input"
+              placeholder="🔍 Search for dishes..."
+              value={heroSearch}
+              onChange={e => setHeroSearch(e.target.value)}
+            />
+            <button type="submit" className="btn btn-primary">Search</button>
+          </form>
           <div className="hero-actions">
             <Link to="/menu" className="btn btn-primary btn-lg">
               Browse Menu →
@@ -67,6 +101,23 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Promo Banner Strip */}
+      <section className="promo-strip-section">
+        <div className="promo-strip">
+          <div className="promo-track">
+            {[...PROMOS, ...PROMOS].map((promo, i) => (
+              <div key={i} className="promo-offer-card" style={{ backgroundColor: promo.color }}>
+                <span className="promo-offer-emoji">{promo.emoji}</span>
+                <div className="promo-offer-text">
+                  <h4>{promo.headline}</h4>
+                  <p>{promo.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Categories */}
       <section className="section">
         <div className="section-header">
@@ -97,21 +148,37 @@ export default function Home() {
         <div className="popular-grid">
           {popular.map(item => (
             <div key={item.id} className="popular-card card">
-              <div className="popular-emoji">{item.emoji}</div>
+              <div className="popular-emoji">
+                {item.emoji}
+                <button
+                  className={`fav-btn ${isFavourite(item.id) ? 'fav-active' : ''}`}
+                  onClick={(e) => { e.stopPropagation(); toggleFavourite(item.id); }}
+                  title="Toggle favourite"
+                >
+                  {isFavourite(item.id) ? '❤️' : '🤍'}
+                </button>
+              </div>
               <div className="popular-info">
                 <div className="popular-top">
                   <h3>{item.name}</h3>
                   <span className="badge badge-accent">{item.category}</span>
                 </div>
+                <div className="card-rating-row">
+                  <span className="stars">⭐ <strong>{item.rating}</strong></span>
+                  <span className="review-count">({item.reviewCount} reviews)</span>
+                </div>
                 <p className="popular-desc">{item.description}</p>
                 <div className="popular-meta">
-                  <span className="stars">{'★'.repeat(Math.round(item.rating))} <span className="rating-num">{item.rating}</span></span>
+                  <span className="delivery-badge-inline">🕐 {item.deliveryTime}</span>
                   <span className="prep-time">⏱ {item.prepTime}</span>
                 </div>
                 <div className="popular-footer">
                   <span className="price">₹{item.price.toFixed(0)}</span>
-                  <button className="btn btn-primary btn-sm" onClick={() => addToCart(item)}>
-                    + Add
+                  <button
+                    className={`btn btn-primary btn-sm ${addedItems[item.id] ? 'added-btn' : ''}`}
+                    onClick={() => handleAdd(item)}
+                  >
+                    {addedItems[item.id] ? 'Added ✓' : '+ Add'}
                   </button>
                 </div>
               </div>

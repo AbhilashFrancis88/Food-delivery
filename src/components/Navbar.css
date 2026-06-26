@@ -29,7 +29,12 @@
   flex-shrink: 0;
 }
 
-.brand-icon { font-size: 1.5rem; }
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
 
 .brand-name {
   font-family: 'Syne', sans-serif;
@@ -132,8 +137,12 @@
   align-items: center;
   justify-content: center;
   padding: 0 4px;
-  animation: pulse 0.3s ease;
+  animation: badgeBounce 0.3s ease;
   box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.cart-btn.wiggle {
+  animation: cartWiggle 0.4s ease;
 }
 
 .mobile-toggle {
@@ -177,4 +186,83 @@
   .navbar-links.open { display: flex; }
 
   .nav-link { width: 100%; }
+
+  .navbar-address-desktop { display: none; }
+  .navbar-address-mobile { display: flex; }
+}
+
+/* Delivery Address */
+.navbar-address-desktop {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  transition: all var(--transition);
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.navbar-address-desktop:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+}
+
+.navbar-address-mobile {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.address-pin { font-size: 0.9rem; flex-shrink: 0; }
+
+.address-text {
+  color: var(--text-primary);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.address-placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.address-change {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.address-modal {
+  max-width: 420px;
+}
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.address-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
 }
